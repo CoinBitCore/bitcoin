@@ -1,0 +1,22 @@
+[Unit]
+Description=Coinbit's distributed currency daemon
+After=network.target
+
+[Service]
+User=coinbit
+Group=coinbit
+
+Type=forking
+PIDFile=/var/lib/coinbitd/coinbitd.pid
+ExecStart=/usr/bin/coinbitd -daemon -pid=/var/lib/coinbitd/coinbitd.pid \
+-conf=/etc/coinbit/coinbit.conf -datadir=/var/lib/coinbitd -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

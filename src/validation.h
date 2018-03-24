@@ -1,13 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Coinbit Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_VALIDATION_H
-#define BITCOIN_VALIDATION_H
+#ifndef COINBIT_VALIDATION_H
+#define COINBIT_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/bitcoin-config.h"
+#include "config/coinbit-config.h"
 #endif
 
 #include "amount.h"
@@ -122,7 +122,7 @@ static const int64_t BLOCK_DOWNLOAD_TIMEOUT_BASE = 1000000;
 /** Additional block download timeout per parallel downloading peer (i.e. 5 min) */
 static const int64_t BLOCK_DOWNLOAD_TIMEOUT_PER_PEER = 500000;
 
-static const int64_t DEFAULT_MAX_TIP_AGE = 24 * 60 * 60;
+static const int64_t DEFAULT_MAX_TIP_AGE = 24 * 60 * 60 * 60;
 /** Maximum age of our tip in seconds for us to be considered current for fee estimation */
 static const int64_t MAX_FEE_ESTIMATION_TIP_AGE = 3 * 60 * 60;
 
@@ -483,4 +483,4 @@ void DumpMempool();
 /** Load the mempool from disk. */
 bool LoadMempool();
 
-#endif // BITCOIN_VALIDATION_H
+#endif // COINBIT_VALIDATION_H
