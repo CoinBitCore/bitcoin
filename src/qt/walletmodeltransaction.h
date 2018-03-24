@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2014 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_QT_WALLETMODELTRANSACTION_H
 #define BITCOIN_QT_WALLETMODELTRANSACTION_H
 
-#include <qt/walletmodel.h>
+#include "walletmodel.h"
 
 #include <QObject>
 
@@ -20,16 +20,17 @@ class WalletModelTransaction
 {
 public:
     explicit WalletModelTransaction(const QList<SendCoinsRecipient> &recipients);
+    ~WalletModelTransaction();
 
-    QList<SendCoinsRecipient> getRecipients() const;
+    QList<SendCoinsRecipient> getRecipients();
 
-    CTransactionRef& getTransaction();
+    CWalletTx *getTransaction();
     unsigned int getTransactionSize();
 
     void setTransactionFee(const CAmount& newFee);
-    CAmount getTransactionFee() const;
+    CAmount getTransactionFee();
 
-    CAmount getTotalTransactionAmount() const;
+    CAmount getTotalTransactionAmount();
 
     void newPossibleKeyChange(CWallet *wallet);
     CReserveKey *getPossibleKeyChange();
@@ -38,8 +39,8 @@ public:
 
 private:
     QList<SendCoinsRecipient> recipients;
-    CTransactionRef walletTransaction;
-    std::unique_ptr<CReserveKey> keyChange;
+    CWalletTx *walletTransaction;
+    CReserveKey *keyChange;
     CAmount fee;
 };
 

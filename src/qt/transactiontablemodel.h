@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_QT_TRANSACTIONTABLEMODEL_H
 #define BITCOIN_QT_TRANSACTIONTABLEMODEL_H
 
-#include <qt/bitcoinunits.h>
+#include "bitcoinunits.h"
 
 #include <QAbstractTableModel>
 #include <QStringList>
@@ -56,6 +56,8 @@ public:
         LabelRole,
         /** Net amount of transaction */
         AmountRole,
+        /** Unique identifier */
+        TxIDRole,
         /** Transaction hash */
         TxHashRole,
         /** Transaction data, hex-encoded */
@@ -77,7 +79,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
-    bool processingQueuedTransactions() const { return fProcessingQueuedTransactions; }
+    bool processingQueuedTransactions() { return fProcessingQueuedTransactions; }
 
 private:
     CWallet* wallet;

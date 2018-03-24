@@ -1,35 +1,42 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <miner.h>
+#include "miner.h"
 
-#include <amount.h>
-#include <chain.h>
-#include <chainparams.h>
-#include <coins.h>
-#include <consensus/consensus.h>
-#include <consensus/tx_verify.h>
-#include <consensus/merkle.h>
-#include <consensus/validation.h>
-#include <hash.h>
-#include <validation.h>
-#include <net.h>
-#include <policy/feerate.h>
-#include <policy/policy.h>
-#include <pow.h>
-#include <primitives/transaction.h>
-#include <script/standard.h>
-#include <timedata.h>
-#include <util.h>
-#include <utilmoneystr.h>
-#include <validationinterface.h>
+#include "amount.h"
+#include "chain.h"
+#include "chainparams.h"
+#include "coins.h"
+#include "consensus/consensus.h"
+#include "consensus/tx_verify.h"
+#include "consensus/merkle.h"
+#include "consensus/validation.h"
+#include "hash.h"
+#include "validation.h"
+#include "net.h"
+#include "policy/feerate.h"
+#include "policy/policy.h"
+#include "pow.h"
+#include "primitives/transaction.h"
+#include "script/standard.h"
+#include "timedata.h"
+#include "txmempool.h"
+#include "util.h"
+#include "utilmoneystr.h"
+#include "validationinterface.h"
 
 #include <algorithm>
 #include <queue>
 #include <utility>
 
+//////////////////////////////////////////////////////////////////////////////
+//
+// BitcoinMiner
+//
+
+//
 // Unconfirmed transactions in the memory pool often depend on other
 // transactions in the memory pool. When we select transactions from the
 // pool, we select by highest fee rate of a transaction combined with all
@@ -118,7 +125,6 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     LOCK2(cs_main, mempool.cs);
     CBlockIndex* pindexPrev = chainActive.Tip();
-    assert(pindexPrev != nullptr);
     nHeight = pindexPrev->nHeight + 1;
 
     pblock->nVersion = ComputeBlockVersion(pindexPrev, chainparams.GetConsensus());
@@ -196,7 +202,7 @@ void BlockAssembler::onlyUnconfirmed(CTxMemPool::setEntries& testSet)
     }
 }
 
-bool BlockAssembler::TestPackage(uint64_t packageSize, int64_t packageSigOpsCost) const
+bool BlockAssembler::TestPackage(uint64_t packageSize, int64_t packageSigOpsCost)
 {
     // TODO: switch to weight-based accounting for packages instead of vsize-based accounting.
     if (nBlockWeight + WITNESS_SCALE_FACTOR * packageSize >= nBlockMaxWeight)
@@ -282,7 +288,7 @@ bool BlockAssembler::SkipMapTxEntry(CTxMemPool::txiter it, indexed_modified_tran
     return mapModifiedTx.count(it) || inBlock.count(it) || failedTx.count(it);
 }
 
-void BlockAssembler::SortForBlock(const CTxMemPool::setEntries& package, std::vector<CTxMemPool::txiter>& sortedEntries)
+void BlockAssembler::SortForBlock(const CTxMemPool::setEntries& package, CTxMemPool::txiter entry, std::vector<CTxMemPool::txiter>& sortedEntries)
 {
     // Sort package by ancestor count
     // If a transaction A depends on transaction B, then A's ancestor count
@@ -346,7 +352,7 @@ void BlockAssembler::addPackageTxs(int &nPackagesSelected, int &nDescendantsUpda
             // Try to compare the mapTx entry to the mapModifiedTx entry
             iter = mempool.mapTx.project<0>(mi);
             if (modit != mapModifiedTx.get<ancestor_score>().end() &&
-                    CompareTxMemPoolEntryByAncestorFee()(*modit, CTxMemPoolModifiedEntry(iter))) {
+                    CompareModifiedEntry()(*modit, CTxMemPoolModifiedEntry(iter))) {
                 // The best entry in mapModifiedTx has higher score
                 // than the one from mapTx.
                 // Switch which transaction (package) to consider
@@ -418,7 +424,7 @@ void BlockAssembler::addPackageTxs(int &nPackagesSelected, int &nDescendantsUpda
 
         // Package can be added. Sort the entries in a valid order.
         std::vector<CTxMemPool::txiter> sortedEntries;
-        SortForBlock(ancestors, sortedEntries);
+        SortForBlock(ancestors, iter, sortedEntries);
 
         for (size_t i=0; i<sortedEntries.size(); ++i) {
             AddToBlock(sortedEntries[i]);

@@ -1,12 +1,12 @@
-// Copyright (c) 2011-2017 The Bitcoin Core developers
+// Copyright (c) 2011-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_QT_GUIUTIL_H
 #define BITCOIN_QT_GUIUTIL_H
 
-#include <amount.h>
-#include <fs.h>
+#include "amount.h"
+#include "fs.h"
 
 #include <QEvent>
 #include <QHeaderView>
@@ -141,7 +141,7 @@ namespace GUIUtil
      * Makes a QTableView last column feel as if it was being resized from its left border.
      * Also makes sure the column widths are never larger than the table's viewport.
      * In Qt, all columns are resizable from the right, but it's not intuitive resizing the last column from the right.
-     * Usually our second to last columns behave as if stretched, and when on stretch mode, columns aren't resizable
+     * Usually our second to last columns behave as if stretched, and when on strech mode, columns aren't resizable
      * interactively or programmatically.
      *
      * This helper object takes care of this issue.
@@ -198,10 +198,6 @@ namespace GUIUtil
     QString formatTimeOffset(int64_t nTimeOffset);
 
     QString formatNiceTimeOffset(qint64 secs);
-
-    QString formatBytes(uint64_t bytes);
-
-    qreal calculateIdealFontSize(int width, const QString& text, QFont font, qreal minPointSize = 4, qreal startPointSize = 14);
 
     class ClickableLabel : public QLabel
     {

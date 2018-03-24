@@ -1,15 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2017 The Bitcoin Core developers
+// Copyright (c) 2009-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef BITCOIN_POLICYESTIMATOR_H
 #define BITCOIN_POLICYESTIMATOR_H
 
-#include <amount.h>
-#include <policy/feerate.h>
-#include <uint256.h>
-#include <random.h>
-#include <sync.h>
+#include "amount.h"
+#include "feerate.h"
+#include "uint256.h"
+#include "random.h"
+#include "sync.h"
 
 #include <map>
 #include <string>
@@ -223,7 +223,7 @@ public:
     bool Read(CAutoFile& filein);
 
     /** Empty mempool transactions on shutdown to record failure to confirm for txs still in mempool */
-    void FlushUnconfirmed();
+    void FlushUnconfirmed(CTxMemPool& pool);
 
     /** Calculation of highest target that estimates are tracked for */
     unsigned int HighestTargetTracked(FeeEstimateHorizon horizon) const;
@@ -245,9 +245,9 @@ private:
     std::map<uint256, TxStatsInfo> mapMemPoolTxs;
 
     /** Classes to track historical data on transaction confirmations */
-    std::unique_ptr<TxConfirmStats> feeStats;
-    std::unique_ptr<TxConfirmStats> shortStats;
-    std::unique_ptr<TxConfirmStats> longStats;
+    TxConfirmStats* feeStats;
+    TxConfirmStats* shortStats;
+    TxConfirmStats* longStats;
 
     unsigned int trackedTxs;
     unsigned int untrackedTxs;
@@ -284,7 +284,7 @@ private:
 
 public:
     /** Create new FeeFilterRounder */
-    explicit FeeFilterRounder(const CFeeRate& minIncrementalFee);
+    FeeFilterRounder(const CFeeRate& minIncrementalFee);
 
     /** Quantize a minimum fee for privacy purpose before broadcast **/
     CAmount round(CAmount currentMinFee);

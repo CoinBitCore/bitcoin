@@ -1,21 +1,37 @@
-<!-- This issue tracker is only for technical issues related to Bitcoin Core.
+<!--- Remove sections that do not apply -->
 
-General bitcoin questions and/or support requests are best directed to the Bitcoin StackExchange at https://bitcoin.stackexchange.com.
+This issue tracker is only for technical issues related to bitcoin-core.
 
-For reporting security issues, please read instructions at https://bitcoincore.org/en/contact/.
+General bitcoin questions and/or support requests and are best directed to the [Bitcoin StackExchange](https://bitcoin.stackexchange.com).
 
-If the node is "stuck" during sync or giving "block checksum mismatch" errors, please ensure your hardware is stable by running memtest and observe CPU temperature with a load-test tool such as linpack before creating an issue! -->
+For reporting security issues, please read instructions at [https://bitcoincore.org/en/contact/](https://bitcoincore.org/en/contact/).
 
-<!-- Describe the issue -->
-<!--- What behavior did you expect? -->
+### Describe the issue
 
-<!--- What was the actual behavior (provide screenshots if the issue is GUI-related)? -->
+### Can you reliably reproduce the issue?
+#### If so, please list the steps to reproduce below:
+1.
+2.
+3.
 
-<!--- How reliably can you reproduce the issue, what are the steps to do so? -->
+### Expected behaviour
+Tell us what should happen
 
-<!-- What version of Bitcoin Core are you using, where did you get it (website, self-compiled, etc)? -->
+### Actual behaviour
+Tell us what happens instead
 
-<!-- What type of machine are you observing the error on (OS/CPU and disk type)? -->
+### Screenshots.
+If the issue is related to the GUI, screenshots can be added to this issue via drag & drop.
 
-<!-- Any extra information that might be useful in the debugging process. -->
-<!--- This is normally the contents of a `debug.log` or `config.log` file. Raw text or a link to a pastebin type site are preferred. -->
+### What version of bitcoin-core are you using?
+List the version number/commit ID, and if it is an official binary, self compiled or a distribution package such as PPA.
+
+### Machine specs:
+- OS:
+- CPU:
+- RAM:
+- Disk size:
+- Disk Type (HD/SDD):
+
+### Any extra information that might be useful in the debugging process.
+This is normally the contents of a `debug.log` or `config.log` file. Raw text or a link to a pastebin type site are preferred.
