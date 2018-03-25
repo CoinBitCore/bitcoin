@@ -24,7 +24,7 @@ lxc=true
 osslTarUrl=http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
 osslPatchUrl=https://bitcoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
 scriptName=$(basename -- "$0")
-signProg="gpg --detach-sign"
+signProg="gpg"
 commitFiles=true
 
 # Help Message
