@@ -15,7 +15,7 @@ out collectively by the network. Coinbit Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately useable, binary version of
-the Coinbit Core software, see https://coinbit.org/en/download, or read the
+the Coinbit Core software, see https://coinbit.org/en/coinbit-core/, or read the
 [original whitepaper](https://coinbit.org/coinbit.pdf).
 
 License
